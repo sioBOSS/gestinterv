@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,37 @@ class Intervention
      * @ORM\Column(type="text")
      */
     private $observations;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Client", inversedBy="interventions")
+     */
+    private $client;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\technician", inversedBy="interventions")
+     */
+    private $technician;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\OperatingSystem", inversedBy="interventions")
+     */
+    private $operating_system;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\InterventionType", inversedBy="interventions")
+     */
+    private $intervention_type;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\material", inversedBy="interventions")
+     */
+    private $materials;
+
+    public function __construct()
+    {
+        $this->intervention_type = new ArrayCollection();
+        $this->materials = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -102,6 +135,94 @@ class Intervention
     public function setObservations(string $observations): self
     {
         $this->observations = $observations;
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getTechnician(): ?technician
+    {
+        return $this->technician;
+    }
+
+    public function setTechnician(?technician $technician): self
+    {
+        $this->technician = $technician;
+
+        return $this;
+    }
+
+    public function getOperatingSystem(): ?OperatingSystem
+    {
+        return $this->operating_system;
+    }
+
+    public function setOperatingSystem(?OperatingSystem $operating_system): self
+    {
+        $this->operating_system = $operating_system;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InterventionType[]
+     */
+    public function getInterventionType(): Collection
+    {
+        return $this->intervention_type;
+    }
+
+    public function addInterventionType(InterventionType $interventionType): self
+    {
+        if (!$this->intervention_type->contains($interventionType)) {
+            $this->intervention_type[] = $interventionType;
+        }
+
+        return $this;
+    }
+
+    public function removeInterventionType(InterventionType $interventionType): self
+    {
+        if ($this->intervention_type->contains($interventionType)) {
+            $this->intervention_type->removeElement($interventionType);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|material[]
+     */
+    public function getMaterials(): Collection
+    {
+        return $this->materials;
+    }
+
+    public function addMaterial(material $material): self
+    {
+        if (!$this->materials->contains($material)) {
+            $this->materials[] = $material;
+        }
+
+        return $this;
+    }
+
+    public function removeMaterial(material $material): self
+    {
+        if ($this->materials->contains($material)) {
+            $this->materials->removeElement($material);
+        }
 
         return $this;
     }

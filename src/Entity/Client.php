@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +42,22 @@ class Client
      * @ORM\Column(type="boolean")
      */
     private $professionnal;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Address", mappedBy="client", orphanRemoval=true)
+     */
+    private $addresses;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\intervention", mappedBy="client")
+     */
+    private $interventions;
+
+    public function __construct()
+    {
+        $this->addresses = new ArrayCollection();
+        $this->interventions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -102,6 +120,68 @@ class Client
     public function setProfessionnal(bool $professionnal): self
     {
         $this->professionnal = $professionnal;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Address[]
+     */
+    public function getAddresses(): Collection
+    {
+        return $this->addresses;
+    }
+
+    public function addAddress(Address $address): self
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses[] = $address;
+            $address->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAddress(Address $address): self
+    {
+        if ($this->addresses->contains($address)) {
+            $this->addresses->removeElement($address);
+            // set the owning side to null (unless already changed)
+            if ($address->getClient() === $this) {
+                $address->setClient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|intervention[]
+     */
+    public function getInterventions(): Collection
+    {
+        return $this->interventions;
+    }
+
+    public function addIntervention(intervention $intervention): self
+    {
+        if (!$this->interventions->contains($intervention)) {
+            $this->interventions[] = $intervention;
+            $intervention->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIntervention(intervention $intervention): self
+    {
+        if ($this->interventions->contains($intervention)) {
+            $this->interventions->removeElement($intervention);
+            // set the owning side to null (unless already changed)
+            if ($intervention->getClient() === $this) {
+                $intervention->setClient(null);
+            }
+        }
 
         return $this;
     }
