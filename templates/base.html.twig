@@ -9,7 +9,88 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+        <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+            <a class="navbar-link" href="{{ path('default') }}">Gestion des interventions</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul class="navbar-nav mr-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('intervention_index') }}">{{ 'Intervention'|trans }}</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('store_index') }}">{{ 'Store'|trans }}</a>
+                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                {% endif %}
+
+                {% if app.user %} 
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_logout') }}">{{ 'Log out'|trans }}</a>
+                    </li>
+                {% elseif not app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}">{{ 'Sign in'|trans }}</a>
+                    </li>
+                {% endif %}
+{# 
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('category_index') }}">{{ 'Category'|trans }}</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('question_index') }}">{{ 'Question'|trans }}</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if '/quiz/' in app.request.server.get('REQUEST_URI') %} active {% endif %}" href="{{ path('quiz_index') }}">{{'Quiz'|trans}}</a>
+                    </li>
+            
+                
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_register') }}">{{ 'Register'|trans }}</a>
+                </li>
+        
+                {% if app.user %} 
+            
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_logout') }}">{{ 'Log out'|trans }}</a>
+                    </li>
+                {% elseif not app.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}">{{ 'Sign in'|trans }}</a>
+                    </li>
+                {% endif %}
+
+                </ul> #}
+
+                <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">{{ 'Search'|trans }}</button>
+                </form>
+            </div>
+        </nav>
+        
+        <main role="main" class="container">
+
+            <div class="starter-template">
+                {# <h1>Bootstrap starter template</h1>
+                <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p> #}
+                {% block body %}{% endblock %}
+            </div>
+
+        </main>
+
     </body>
+
+        {% block javascripts %}
+            <script src="https://kit.fontawesome.com/f0b6273a17.js" crossorigin="anonymous"></script>
+        {% endblock %}
+    
+    
 </html>

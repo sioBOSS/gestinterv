@@ -49,7 +49,7 @@ class Intervention
     private $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\technician", inversedBy="interventions")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Technician", inversedBy="interventions")
      */
     private $technician;
 
@@ -64,7 +64,7 @@ class Intervention
     private $intervention_type;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\material", inversedBy="interventions")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Material", inversedBy="interventions")
      */
     private $materials;
 
